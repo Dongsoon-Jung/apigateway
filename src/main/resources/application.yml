@@ -1,0 +1,87 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enable: false
+      routes:
+        - id: user
+          uri: ${user-service.host.url}
+          predicates:
+            - Path=/user/**
+          filters:
+            - RewritePath=/user/(?<path>.*), /$\{path}
+          metadata:
+            connect-timeout: 1000
+            response-timeout: 3000
+
+      httpclient:
+        connect-timeout: 10000
+        response-timeout: 10s
+
+server:
+  port: 8080
+
+logging:
+  level:
+    root: info
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include:
+          - "info"
+          - "health"
+          - "gateway"
+          - "bus-refresh"
+  endpoint:
+    gateway:
+      enabled: true
+
+--- #local
+spring:
+  profiles: local
+  application:
+    name: api-gateway
+
+user-service:
+  host:
+    url: http://localhost:8080
+
+server:
+  port: 8008
+
+--- #beta
+spring:
+  profiles: beta
+  application:
+    name: api-gateway
+
+user-service:
+  host:
+    url: http://localhost:8080
+
+--- #staging
+spring:
+  profiles: staging
+  application:
+    name: api-gateway
+
+user-service:
+  host:
+    url: http://localhost:8080
+
+--- #prod
+spring:
+  profiles: prod
+  application:
+    name: api-gateway
+
+user-service:
+  host:
+    url: http://localhost:8080
