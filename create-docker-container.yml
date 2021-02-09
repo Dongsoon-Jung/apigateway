@@ -1,0 +1,13 @@
+---
+- hosts: all
+  become: true
+
+  tasks:
+  - name: login to aws ecr
+    command: ./aws_login.sh
+    args:
+      chdir: /opt/docker
+
+  - name: creating docker image using docker command
+    command: docker run -d --name apigateway -p 8080:8080 apigateway
+
