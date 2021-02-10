@@ -23,6 +23,6 @@ public class ApigatewayApplication {
 
 	@GetMapping("/healthcheck")
 	public String healthcheck() {
-		return "Healthcheck... SUCCESS! by dosjung";
+		return "Healthcheck... SUCCESS! by dosjung...";
 	}
 }
