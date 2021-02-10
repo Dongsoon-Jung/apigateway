@@ -20,4 +20,9 @@ public class ApigatewayApplication {
 	public void test() {
 		log.info("test-api called...");
 	}
+
+	@GetMapping("/healthcheck")
+	public String healthcheck() {
+		return "Healthcheck:SUCCESS"
+	}
 }
